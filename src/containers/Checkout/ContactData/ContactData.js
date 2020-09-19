@@ -3,16 +3,60 @@ import axios from '../../../axios-orders';
 
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import Input from '../../../components/UI/Input/Input';
 import classes from './ContactData.module.css';
 
 
 class ContactData extends Component {
   state = {
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      postalCode: ''
+    orderForm: {
+      name: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your Name'
+        },
+        value: ''
+      },
+      address: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your Address'
+        },
+        value: ''
+      },
+      zipCode: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your Zipcode'
+        },
+        value: ''
+      },
+      country: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your Name'
+        },
+        value: ''
+      },
+      email: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'email',
+          placeholder: 'Your Email'
+        },
+        value: ''
+      },
+      deliveryMethod: {
+        elementType: 'select',
+        elementConfig: {
+          options: [{value: 'fastest', displayValue: 'fastest'}, {value: 'cheapest', displayValue: 'cheapest'}]
+        },
+        value: ''
+      }
     },
     loading: false
   }
@@ -26,13 +70,7 @@ class ContactData extends Component {
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      customer: {
-        name: "Abbas Salami",
-        address: "The woo!",
-        zipCode: "Nigeria"
-      },
-      email: "test@test.com",
-      deliveryMethod: "SuperFast"
+      
     };
 
     // Post data to server
@@ -47,10 +85,10 @@ class ContactData extends Component {
   render(){
     let form = (
       <form>
-        <input type="text" name="name" placeholder="Enter Your Name"/>
-        <input type="email" name="email" placeholder="Enter Your Email"/>
-        <input type="text" name="street" placeholder="Street"/>
-        <input type="text" name="postal" placeholder="Postal"/>
+        <Input elementType="" elementConfig="" value=""/>
+        <Input inputtype="input" type="email" name="email" placeholder="Enter Your Email"/>
+        <Input inputtype="input" type="text" name="street" placeholder="Street"/>
+        <Input inputtype="input" type="text" name="postal" placeholder="Postal"/>
         <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
       </form>
     );
