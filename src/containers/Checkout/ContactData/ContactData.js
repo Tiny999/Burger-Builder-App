@@ -20,7 +20,8 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: false
+        valid: false,
+        touched: false
       },
       address: {
         elementType: 'input',
@@ -32,7 +33,8 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: false
+        valid: false,
+        touched: false
       },
       zipCode: {
         elementType: 'input',
@@ -46,7 +48,8 @@ class ContactData extends Component {
           minLength: 5,
           maxLength: 5
         },
-        valid: false
+        valid: false,
+        touched: false
       }, 
       country: {
         elementType: 'input',
@@ -58,7 +61,8 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: false
+        valid: false,
+        touched: false
       },
       email: {
         elementType: 'input',
@@ -70,16 +74,19 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: false
+        valid: false,
+        touched: false
       },
       deliveryMethod: {
         elementType: 'select',
         elementConfig: {
           options: [{value: 'fastest', displayValue: 'Fastest'}, {value: 'cheapest', displayValue: 'Cheapest'}]
         },
-        value: ''
+        value: '',
+        valid: true
       }
     },
+    formIsValid: false,
     loading: false
   }
 
@@ -130,16 +137,22 @@ class ContactData extends Component {
   inputChangedHandler =( e, inputId )=> {
     // Grab mutable state objects
     const updatedOrderForm = {...this.state.orderForm}
-    const updatedFromElement = {...updatedOrderForm[inputId]}
+    const updatedFormElement = {...updatedOrderForm[inputId]}
 
     // update value
-    updatedFromElement.value = e.target.value;
-    updatedFromElement.valid = this.checkValidity(updatedFromElement.value, updatedFromElement.validation);
-    console.log(updatedFromElement);
-    updatedOrderForm[inputId] = updatedFromElement;
+    updatedFormElement.value = e.target.value;
+    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+    updatedFormElement.touched = true;
+    updatedOrderForm[inputId] = updatedFormElement;
 
+    let formIsValid = true;
+    for (let inputID in updatedOrderForm){
+      formIsValid = updatedOrderForm[inputID].valid && formIsValid;
+    }
+
+    console.log(formIsValid)
     // setState
-    this.setState({orderForm: updatedOrderForm});
+    this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid});
   }
 
   render(){
@@ -159,9 +172,12 @@ class ContactData extends Component {
             elementType={element.config.elementType} 
             elementConfig={element.config.elementConfig} 
             value={element.config.value}
+            shouldValidate={element.config.validation}
+            invalid={!element.config.valid}
+            touched={element.config.touched}
             changed={(e) => this.inputChangedHandler(e, element.id)}/>
         ))}
-        <Button btnType="Success">ORDER</Button>
+        <Button btnType="Success" disabled={!this.state.formIsValid}>ORDER</Button>
       </form>
     );
     if (this.state.loading){
