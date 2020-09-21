@@ -16,7 +16,11 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'Your Name'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       address: {
         elementType: 'input',
@@ -24,7 +28,11 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'Your Address'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       zipCode: {
         elementType: 'input',
@@ -32,7 +40,13 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'Zipcode'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true,
+          minLength: 5,
+          maxLength: 5
+        },
+        valid: false
       }, 
       country: {
         elementType: 'input',
@@ -40,7 +54,11 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'Country'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       email: {
         elementType: 'input',
@@ -48,7 +66,11 @@ class ContactData extends Component {
           type: 'email',
           placeholder: 'Your Email'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       deliveryMethod: {
         elementType: 'select',
@@ -87,14 +109,36 @@ class ContactData extends Component {
       .catch(err => this.setState({loading: false}));
   }
 
-  inputChangedHandler =( e, inputId )=> {
-    const updatedOrderForm = {...this.state.orderForm}
+  checkValidity(value, rules){
+    let isValid = true;
 
+    if(rules.required){ 
+      isValid = value.trim() !== '' && isValid;
+    }
+
+    if(rules.minLength){
+      isValid = value.length >= rules.minLength && isValid;
+    }
+
+    if(rules.maxLength){
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+
+    return isValid;
+  }
+
+  inputChangedHandler =( e, inputId )=> {
+    // Grab mutable state objects
+    const updatedOrderForm = {...this.state.orderForm}
     const updatedFromElement = {...updatedOrderForm[inputId]}
 
+    // update value
     updatedFromElement.value = e.target.value;
+    updatedFromElement.valid = this.checkValidity(updatedFromElement.value, updatedFromElement.validation);
+    console.log(updatedFromElement);
     updatedOrderForm[inputId] = updatedFromElement;
 
+    // setState
     this.setState({orderForm: updatedOrderForm});
   }
 
