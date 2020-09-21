@@ -53,7 +53,7 @@ class ContactData extends Component {
       deliveryMethod: {
         elementType: 'select',
         elementConfig: {
-          options: [{value: 'fastest', displayValue: 'fastest'}, {value: 'cheapest', displayValue: 'cheapest'}]
+          options: [{value: 'fastest', displayValue: 'Fastest'}, {value: 'cheapest', displayValue: 'Cheapest'}]
         },
         value: ''
       }
@@ -82,6 +82,17 @@ class ContactData extends Component {
       .catch(err => this.setState({loading: false}));
   }
 
+  inputChangedHandler =( e, inputId )=> {
+    const updatedOrderForm = {...this.state.orderForm}
+
+    const updatedFromElement = {...updatedOrderForm[inputId]}
+
+    updatedFromElement.value = e.target.value;
+    updatedOrderForm[inputId] = updatedFromElement;
+
+    this.setState({orderForm: updatedOrderForm});
+  }
+
   render(){
     const formElementsArr = [];
     for (let key in this.state.orderForm){
@@ -98,7 +109,8 @@ class ContactData extends Component {
             key={element.id} 
             elementType={element.config.elementType} 
             elementConfig={element.config.elementConfig} 
-            value={element.config.value}/>
+            value={element.config.value}
+            changed={(e) => this.inputChangedHandler(e, element.id)}/>
         ))}
         <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
       </form>
