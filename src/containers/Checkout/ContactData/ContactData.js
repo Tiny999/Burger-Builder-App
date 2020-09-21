@@ -65,12 +65,17 @@ class ContactData extends Component {
     e.preventDefault();
     // Set Loading State
     this.setState({loading: true});
+
+    const formData = {};
+    for( let element in this.state.orderForm){
+      formData[element] = this.state.orderForm[element].value;
+    }
     
     // Grab Order Details
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      
+      orderData: formData
     };
 
     // Post data to server
@@ -103,7 +108,7 @@ class ContactData extends Component {
     }
 
     let form = (
-      <form>
+      <form onSubmit={this.orderHandler}>
         {formElementsArr.map(element => (
           <Input 
             key={element.id} 
@@ -112,7 +117,7 @@ class ContactData extends Component {
             value={element.config.value}
             changed={(e) => this.inputChangedHandler(e, element.id)}/>
         ))}
-        <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
+        <Button btnType="Success">ORDER</Button>
       </form>
     );
     if (this.state.loading){
