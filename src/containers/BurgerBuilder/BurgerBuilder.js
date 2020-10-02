@@ -16,17 +16,7 @@ class BurgerBuilder extends Component{
   state = {
     purchasable: false,
     buying: false,
-    loading: false,
-    error: null
   }
-
-  // componentDidMount(){
-  //   axios.get('https://react-burger-builder-2576f.firebaseio.com/ingredients.json')
-  //     .then(response => {
-  //       this.setState({ingredients: response.data})
-  //     })
-  //     .catch(err => this.setState({error: true}))
-  // }
 
   updatePurchaseStatus = ingredients => {
     const sum = Object.keys(ingredients).map(igKey => {
