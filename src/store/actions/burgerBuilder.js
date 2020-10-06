@@ -15,10 +15,10 @@ export const removeIngredient = (name) => {
   }
 }
 
-export const setIngredient = ingredient => {
+export const setIngredient = ingredients => {
   return{
     type: actionTypes.SET_INGREDIENT,
-    ingredient: ingredient
+    ingredients: ingredients
   }
 }
 
